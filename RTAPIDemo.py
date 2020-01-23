@@ -16,13 +16,12 @@ import websocket
 import json
 import subprocess
 from subprocess import Popen
-#authToken="fbfe776fac182ce8c034681f26f36ed9ce496b4bfaea2fbff5e2353610de4354"
-authToken="eec82673100ecf6d01fd53a7565d8e9f0c6f56883974088b5c059c0e93a4be4d"
+authToken="put your authToken here"
 def getOptions(args=sys.argv[1:]):
    parser = argparse.ArgumentParser(description="Parses command.")
    parser.add_argument("-r", "--raw", dest='raw',action='store_true', help="output raw data.")
    parser.add_argument("-e", "--epoch",dest='epoch',action='store_true', help="Display EPOCH Time.")
-   parser.add_argument("-m", "--mac",dest='mac',action='store_true', help="Display MAC.")
+#   parser.add_argument("-m", "--mac",dest='mac',action='store_true', help="Display MAC.")
    parser.add_argument("-s", "--sequencenumber",dest='seq',action='store_true', help="Display sequence number.")
    parser.add_argument("-rid", "--recieverid",dest='rid',action='store_true', help="Display Reciever ID.")
    parser.add_argument("-rp", "--recieverplatform",dest='rp',action='store_true', help="Display Reciever Platform(RDK version).")
@@ -56,10 +55,9 @@ def on_message(ws, message):
 #pull JSON string from message
   jdata=json.loads(line)
 
-# MAC
-  if(tdata.mac==1 or tdata.verbose==1):
-     res=getJSONData(jdata,'header','estbMac','n/a')
-     outputstr=str(res)
+# MAC always displayed
+  res=getJSONData(jdata,'header','estbMac','n/a')
+  outputstr=str(res)
 #pull EPOCH time from message
   if(tdata.epoch==1 or tdata.verbose==1):
      res=getJSONData(jdata,'metaData','epochTime','n/a')
@@ -123,7 +121,6 @@ def on_open(ws):
   time.sleep(1)
 # use -o=filename arg to select search string
   ws.send(json.dumps({"action": "send-subnet","data": tdata.input}))
-#  ws.send(json.dumps({"action": "send-subnet","data": "10:C2:5A:61:E9:1F"}))
   tdata.ApiCallStartTime=time.time()
   if(tdata.startFlag==0):
     tdata.ApiCallStopTime=tdata.ApiCallStopTime-10
@@ -154,9 +151,6 @@ def read_API_data(threadName,runtime,i):
   while(True):
       websocket.enableTrace(True)
       ws = websocket.WebSocketApp("wss://wxre-streaming-api.xre.aws.r53.xcal.tv/v1?authToken="+authToken, on_message = on_message, on_error = on_error, on_close = on_close)
-#      ws = websocket.WebSocketApp("wss://wxre-streaming-api.xre.aws.r53.xcal.tv/v1?authToken=728d39959c5fab43bfee2481375b041aa4965005af92abcc4ea206f5a6abf307", on_message = on_message, on_error = on_error, on_close = on_close)
-#      ws = websocket.WebSocketApp("wss://wxre-streaming-api.xre.aws.r53.xcal.tv/v1?authToken=9d47627d549db5cccbb87ed4b33bdf79f5964480a001bb93f4dd3be9e0cc4d57", on_message = on_message, on_error = on_error, on_close = on_close)
-#      ws = websocket.WebSocketApp("wss://n18r6byomd.execute-api.us-east-1.amazonaws.com/v1?authToken=9d47627d549db5cccbb87ed4b33bdf79f5964480a001bb93f4dd3be9e0cc4d57", on_message = on_message, on_error = on_error, on_close = on_close)
       if(tdata.verbose==1):
           print(ws)
       ws.on_open = on_open
@@ -183,10 +177,10 @@ if __name__ == "__main__":
      tdata.epoch=1
   else:
      tdata.epoch=0
-  if options.mac:
-     tdata.mac=1
-  else:
-     tdata.mac=0
+#  if options.mac:
+#     tdata.mac=1
+#  else:
+#     tdata.mac=0
   if options.seq:
      tdata.seq=1
   else:
