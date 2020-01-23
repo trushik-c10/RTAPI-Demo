@@ -1,6 +1,12 @@
-StreamRTAPI
+RTAPI-Demo
 
-Streaming Realtime API usage: python3 RT_API_VPN.py [-h] [-r] [-e] [-m] [-s] [-rid] [-rp] [-p] [-d] [-v] [-i INPUT] [-o OUTPUT]
+To use insert your AuthToken to the  RTAPIDemo.py on line 20
+authToken="put your auth Token here"
+
+MAC address of incoming messages are always displayed
+
+
+Streaming Realtime API usage: python3 RTAPIDemo.py [-h] [-r] [-e] [-s] [-rid] [-rp] [-p] [-d] [-v] [-i INPUT] [-o OUTPUT]
 
 optional arguments: -h, --help show this help message and exit -r, --raw display raw data. -e, --epoch Display EPOCH Time. -m, --mac Display MAC. -s, --sequencenumber Display sequence number. -rid, --recieverid Display Reciever ID. -rp, --recieverplatform Display Reciever Platform(RDK version). -p, --pipe Display pipe. -d, --description Display description. -v, --verbose Verbose mode (output everything) -i INPUT, --input INPUT Subnet (in quotes" ".) 
 examples: To recieve all messages from a single Subnet -i="<Your Subnet>" To recieve all messages from a Subnet (single warehouse) -i=:"<your Subnet>"
@@ -9,4 +15,4 @@ examples: To recieve all messages from a single Subnet -i="<Your Subnet>" To rec
 
 example: To recieve all messages from a single Subnet output MAC Pipe Sequence number and description log to logs/My.log
 
-    python3 RT_API_VPN.py -m -p -s -d -i="<your Subnet>" -o="My.log"
+    python3 RTAPIDemo.py -p -s -d -i="<your Subnet>" -o="My.log"
