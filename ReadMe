@@ -2,10 +2,11 @@ StreamRTAPI
 
 Streaming Realtime API usage: python3 RT_API_VPN.py [-h] [-r] [-e] [-m] [-s] [-rid] [-rp] [-p] [-d] [-v] [-i INPUT] [-o OUTPUT]
 
-optional arguments: -h, --help show this help message and exit -r, --raw display raw data. -e, --epoch Display EPOCH Time. -m, --mac Display MAC. -s, --sequencenumber Display sequence number. -rid, --recieverid Display Reciever ID. -rp, --recieverplatform Display Reciever Platform(RDK version). -p, --pipe Display pipe. -d, --description Display description. -v, --verbose Verbose mode (output everything) -i INPUT, --input INPUT Search string (in quotes" ".) examples: To recieve all messages from a single MAC address -i="80:F5:03:E0:1B:27" To recieve all messages from a IP range (single warehouse) -i=:"50.222.17.18" To recieve all messages -i=:"WarehouseDeviceSummary"
+optional arguments: -h, --help show this help message and exit -r, --raw display raw data. -e, --epoch Display EPOCH Time. -m, --mac Display MAC. -s, --sequencenumber Display sequence number. -rid, --recieverid Display Reciever ID. -rp, --recieverplatform Display Reciever Platform(RDK version). -p, --pipe Display pipe. -d, --description Display description. -v, --verbose Verbose mode (output everything) -i INPUT, --input INPUT Subnet (in quotes" ".) 
+examples: To recieve all messages from a single Subnet -i="<Your Subnet>" To recieve all messages from a Subnet (single warehouse) -i=:"<your Subnet>"
 
 -o OUTPUT, --output OUTPUT Your log file (in quotes" ").
 
-example: To recieve all messages from a single MAC address output MAC Pipe Sequence number and description log to My.log
+example: To recieve all messages from a single Subnet output MAC Pipe Sequence number and description log to My.log
 
-    python3 RT_API_VPN.py -m -p -s -d -i="80:F5:03:E0:1B:27" -o="My.log"
+    python3 RT_API_VPN.py -m -p -s -d -i="<your Subnet>" -o="My.log"
