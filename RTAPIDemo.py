@@ -16,7 +16,7 @@ import websocket
 import json
 import subprocess
 from subprocess import Popen
-authToken="put your authToken here"
+authToken="Your AuthToken here"
 def getOptions(args=sys.argv[1:]):
    parser = argparse.ArgumentParser(description="Parses command.")
    parser.add_argument("-r", "--raw", dest='raw',action='store_true', help="output raw data.")
@@ -42,8 +42,8 @@ def on_message(ws, message):
   outputstr=""
   out=str(tdata.messageCount)+","+str(time.time())+","+message+"\n"
   tdata.messageCount=tdata.messageCount+1
-# This section will limit the number of messages this will be added to the command line args
-#  if(tdata.messageCount>=7000):
+# This section will limit the number of messages
+#  if(tdata.messageCount>=1000):
 #    ws.close()
 #    tdata.messageCount=0
 ################################## 
@@ -62,19 +62,14 @@ def on_message(ws, message):
   if(tdata.epoch==1 or tdata.verbose==1):
      res=getJSONData(jdata,'metaData','epochTime','n/a')
      outputstr=outputstr+str(res)
-
-
-
 #sequence number
   if(tdata.seq==1 or tdata.verbose==1):
      res=getJSONData(jdata,'metaData','sequenceNumber','n/a')
      outputstr=outputstr+", "+str(res)
-
 # pipe
   if(tdata.pipe==1 or tdata.verbose==1):
      res=getJSONData(jdata,'header','pipe','n/a')
      outputstr=outputstr+", "+str(res)
-
 #reciever ID
 # receiverId can be empty or "null" in either case it's length is <16 so a string >16 is a Dirty stb
   if(tdata.rid==1 or tdata.verbose==1):
@@ -83,17 +78,14 @@ def on_message(ws, message):
         outputstr=outputstr+", Dirty"
      else:
         outputstr=outputstr+", Clean"
-
 #reciever Platform (RDX version)
   if(tdata.rp==1 or tdata.verbose==1):
      res=getJSONData(jdata,'header','receiverPlatform','n/a')
      outputstr=outputstr+", "+str(res)
-
 #Description 
   if(tdata.d==1 or tdata.verbose==1):
      res=getJSONData(jdata,'metaData','description','n/a')
      outputstr=outputstr+", "+str(res)
-
 ########################################################
 # Output data section
 # raw message has a "\n\r" at the end remove it to avoid blank lines in csv file
@@ -103,9 +95,8 @@ def on_message(ws, message):
   print("message Count="+str(tdata.messageCount))
   if(tdata.messageCount>2):
     tdata.f.write(outputstr)
-#    tdata.f.write("\n\r")
     tdata.f.flush()
-#print the raw mwssage and send it to the output file  
+#print the raw message if selected and send it to the output file  
 ##################################
   if(tdata.raw==1 or tdata.verbose==1):
     print("RAW:")
@@ -116,37 +107,34 @@ def on_message(ws, message):
       tdata.f.write(line)
   tdata.f.write("\n")
   tdata.f.flush()
+
 def on_open(ws):
   ws.send("connection open")
   time.sleep(1)
-# use -o=filename arg to select search string
+# use -i="subnet" arg to select subnet
   ws.send(json.dumps({"action": "send-subnet","data": tdata.input}))
   tdata.ApiCallStartTime=time.time()
   if(tdata.startFlag==0):
-    tdata.ApiCallStopTime=tdata.ApiCallStopTime-10
-    tdata.ApiCallStartTime=tdata.ApiCallStartTime+20
+    print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
 
 def on_close(ws):
   ws.close()
   if(tdata.startFlag==1):
       tdata.startFlag=0
   print("### closed ###")
+  tdata.messageCount=0
   tdata.ApiCallStopTime=time.time()
-#  print("thread ",tdata.tn,", ",tdata.ApiCallStartTime,"  ",tdata.ApiCallStopTime," time in min = ",((tdata.ApiCallStopTime-tdata.ApiCallStartTime)/60))
 def on_error(ws, message):
   print(message)
 def read_API_data(threadName,runtime,i):
-  tdata.ApiCallStopTime=time.time()
-  time.sleep(2)
+  tdata.ApiCallStopTime=0
   tdata.ApiCallStartTime=time.time()
-  tdata.startFlag=0
+  tdata.startFlag=1
   tdata.messageCount=0
   startTime="StartTime:"+time.ctime(time.time())
   fileName="logs/"+tdata.output
 #  print("filename")
   tdata.f = open(fileName, "a")
-#  tdata.f.write("Splunk Timestamp,MAC,Sequence Number,PIPE,Description,RAW\n")
-#  print("in read_API_data")
 
   while(True):
       websocket.enableTrace(True)
@@ -155,8 +143,6 @@ def read_API_data(threadName,runtime,i):
           print(ws)
       ws.on_open = on_open
       ws.run_forever()
-
-#      print("restart")
 
 if __name__ == "__main__":
   tdata = threading.local()
@@ -207,8 +193,6 @@ if __name__ == "__main__":
   else:
      tdata.raw=0
   try:
-    read_API_data("thread1_long",10,0) 
+    read_API_data("websocket",10,0) 
   except:
     print("Error: unable to start Streaming API")
-
-  time.sleep(20)
