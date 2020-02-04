@@ -16,7 +16,7 @@ import websocket
 import json
 import subprocess
 from subprocess import Popen
-authToken="Your AuthToken here"
+authToken="fbfe776fac182ce8c034681f26f36ed9ce496b4bfaea2fbff5e2353610de4354"
 def getOptions(args=sys.argv[1:]):
    parser = argparse.ArgumentParser(description="Parses command.")
    parser.add_argument("-r", "--raw", dest='raw',action='store_true', help="output raw data.")
@@ -126,7 +126,7 @@ def on_close(ws):
   tdata.ApiCallStopTime=time.time()
 def on_error(ws, message):
   print(message)
-def read_API_data(threadName,runtime,i):
+def read_API_data():
   tdata.ApiCallStopTime=0
   tdata.ApiCallStartTime=time.time()
   tdata.startFlag=1
@@ -192,7 +192,10 @@ if __name__ == "__main__":
      tdata.raw=1
   else:
      tdata.raw=0
+# for this demo the real-time api is single threaded, 
+#at this point read_API_data can easily be a seperate thread
+#by using the call _thread.start_new_thread(read_API_data())
   try:
-    read_API_data("websocket",10,0) 
+    read_API_data() 
   except:
     print("Error: unable to start Streaming API")
