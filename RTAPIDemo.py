@@ -138,7 +138,7 @@ def read_API_data():
 
   while(True):
       websocket.enableTrace(True)
-      ws = websocket.WebSocketApp("wss://wxre-streaming-api.xre.aws.r53.xcal.tv/v1?authToken="+authToken, on_message = on_message, on_error = on_error, on_close = on_close)
+      ws = websocket.WebSocketApp("wss://wxre-streaming-api.xre.aws.r53.xcal.tv/v1?authToken="+authToken, on_message = on_message, on_error = on_error, on_close = on_close)  
       if(tdata.verbose==1):
           print(ws)
       ws.on_open = on_open
