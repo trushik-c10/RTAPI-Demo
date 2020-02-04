@@ -16,7 +16,7 @@ import websocket
 import json
 import subprocess
 from subprocess import Popen
-authToken="fbfe776fac182ce8c034681f26f36ed9ce496b4bfaea2fbff5e2353610de4354"
+authToken="Add your Token here"
 def getOptions(args=sys.argv[1:]):
    parser = argparse.ArgumentParser(description="Parses command.")
    parser.add_argument("-r", "--raw", dest='raw',action='store_true', help="output raw data.")
