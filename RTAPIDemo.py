@@ -115,9 +115,19 @@ def on_open(ws):
   ws.send(json.dumps({"action": "send-subnet","data": tdata.input}))
   tdata.ApiCallStartTime=time.time()
   if(tdata.startFlag==0):
-     tdata.ApiCallStopTime=int(tdata.ApiCallStopTime*1000)
-     tdata.ApiCallStartTime=int(tdata.ApiCallStartTime*1000)
-     print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
+    tdata.ApiCallStopTime=int(tdata.ApiCallStopTime*1000)
+    tdata.ApiCallStartTime=int(tdata.ApiCallStartTime*1000)
+    print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
+    output= subprocess.check_output(['./hist.sh',str(tdata.ApiCallStopTime),str(tdata.ApiCallStartTime)])
+    print("output from history buffer will be in csv file")
+#  tdata.tn=threadName
+    fName="logs/"+tdata.output      
+    fileName=fName+"_hist"
+    f = open(fileName, "a")
+    f.write(output+"\n")
+    f.close()
+
+def on_close(ws):
   ws.close()
   if(tdata.startFlag==1):
       tdata.startFlag=0
