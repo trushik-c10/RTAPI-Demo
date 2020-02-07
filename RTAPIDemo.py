@@ -115,9 +115,9 @@ def on_open(ws):
   ws.send(json.dumps({"action": "send-subnet","data": tdata.input}))
   tdata.ApiCallStartTime=time.time()
   if(tdata.startFlag==0):
-    print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
-
-def on_close(ws):
+     tdata.ApiCallStopTime=int(tdata.ApiCallStopTime*1000)
+     tdata.ApiCallStartTime=int(tdata.ApiCallStartTime*1000)
+     print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
   ws.close()
   if(tdata.startFlag==1):
       tdata.startFlag=0
