@@ -1,4 +1,4 @@
-RTAPI-Demo
+RTAPI-Demo with historical API to fill possible gaps during disconnect/connect cycles
 system requirnments:
     Python 3.0 or greater is required
     Modules websockets and websockets-client need to be installed
