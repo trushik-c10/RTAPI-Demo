@@ -16,7 +16,7 @@ import websocket
 import json
 import subprocess
 from subprocess import Popen
-authToken="Add your Token here"
+authToken="eec82673100ecf6d01fd53a7565d8e9f0c6f56883974088b5c059c0e93a4be4d"
 def getOptions(args=sys.argv[1:]):
    parser = argparse.ArgumentParser(description="Parses command.")
    parser.add_argument("-r", "--raw", dest='raw',action='store_true', help="output raw data.")
@@ -115,16 +115,17 @@ def on_open(ws):
   ws.send(json.dumps({"action": "send-subnet","data": tdata.input}))
   tdata.ApiCallStartTime=time.time()
   if(tdata.startFlag==0):
-    tdata.ApiCallStopTime=int(tdata.ApiCallStopTime*1000)
-    tdata.ApiCallStartTime=int(tdata.ApiCallStartTime*1000)
-    print("\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
-    output= subprocess.check_output(['./hist.sh',str(tdata.ApiCallStopTime),str(tdata.ApiCallStartTime)])
+    tdata.ApiCallStopTime=int((tdata.ApiCallStopTime-10)*1000)
+    tdata.ApiCallStartTime=int((tdata.ApiCallStartTime+10)*1000)
+    callstr=' -s '+str(tdata.ApiCallStopTime)+' -e '+str(tdata.ApiCallStartTime) + ' -n '+tdata.input
+    print("output string ",callstr,"\n++++++++++++++++++++++++++++\nnew websocket started at: ",tdata.ApiCallStartTime,"\nprevious websocket ended at: ",tdata.ApiCallStopTime,"\n")
+    output= subprocess.check_output(['./hist.sh',callstr])
     print("output from history buffer will be in csv file")
 #  tdata.tn=threadName
     fName="logs/"+tdata.output      
     fileName=fName+"_hist"
     f = open(fileName, "a")
-    f.write(output+"\n")
+    f.write(str(output)+'\n')
     f.close()
 
 def on_close(ws):
