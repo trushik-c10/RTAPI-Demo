@@ -91,14 +91,17 @@ end=$ENDTIME
 #########################################
 loopval=1
 #strt=$1
-ht=$(date -d "$strt" +"%s%N" )
-ht2=$(date -d "$end" +"%s%N")
-ht=$(echo $ht | cut -b1-13) 
-ht2=$(echo $ht2 | cut -b1-13) 
+#ht=$(date -d "$strt" +"%s%N" )
+#ht2=$(date -d "$end" +"%s%N")
+#ht=$(echo $ht | cut -b1-13) 
+#ht2=$(echo $ht2 | cut -b1-13) 
+ht=$strt
+ht2=$end
 net=\"$NETWORK\"
 echo $ht
 echo $ht2
 echo $net	
+sleep 2
 while [ $loopval != 0 ]
 do
 strHist=$(curl -X POST \
@@ -134,7 +137,7 @@ EOF
 done
 #cat "logs/"$OUTPUT.log
 #python3 ProcessHist.py "logs/"$OUTPUT.log $MAC 
-python3 ProcessHist.py "logs/"$OUTPUT.log $MAC  >> "logs/"$OUTPUT.csv
+#python3 ProcessHist.py "logs/"$OUTPUT.log $MAC  >> "logs/"$OUTPUT.csv
 #  -H 'Authorization: Basic 728d39959c5fab43bfee2481375b041aa4965005af92abcc4ea206f5a6abf307' \
 #  -H 'Authorization: Basic 9d47627d549db5cccbb87ed4b33bdf79f5964480a001bb93f4dd3be9e0cc4d57' \
 #  -H 'Authorization: Basic eec82673100ecf6d01fd53a7565d8e9f0c6f56883974088b5c059c0e93a4be4d' \
